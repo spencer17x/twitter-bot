@@ -4,12 +4,13 @@ import { fmt, link } from 'telegraf/format';
 import { AuthLevel, userController } from '../controllers/UserController';
 import { groupController } from '../controllers/GroupController';
 import { RettiwtUtils } from '../rettiwt-utils';
+import { config } from '../config';
 
 const userPrefix = '-user';
 const groupPrefix = '-group=';
 
 const noPermissionText = () => {
-	return `You don't have permission.Please contact the admin: @${process.env.ADMIN_TG_USERNAME}`;
+	return `You don't have permission.Please contact the admin: @${config.telegram.adminUserName}`;
 };
 
 export const listCommand = (tgBot: Telegraf, twitterClient: RettiwtUtils) => {

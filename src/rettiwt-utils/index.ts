@@ -56,7 +56,7 @@ export class RettiwtUtils {
 			}
 		} finally {
 			console.log('Next checkUpdate...');
-			void this.checkUpdate(callback);
+			this.checkUpdate(callback).catch(console.error);
 		}
 	};
 
@@ -85,10 +85,10 @@ export class RettiwtUtils {
 		this.loginUserName = userName;
 		this.launchTime = Date.now();
 
-		void this.checkUpdate({
+		this.checkUpdate({
 			onUpdate,
 			onUpdateError
-		});
+		}).catch(console.error);
 	};
 
 	public sub = async (users: string[]) => {
