@@ -71,16 +71,9 @@ const main = async () => {
 		apiKey: config.twitter.apiKey,
 		onUpdate: async (tweet) => {
 			sendToTg(tgBot, tweet).catch(console.error);
-			sendToWeChat(weChatBot, tweet).catch(console.error);
 		},
 	});
 	console.log('Twitter client launched');
-
-	const weChatBot = new WechatBot({
-		name: 'twitter-bot',
-	});
-	await weChatBot.launch();
-	console.log('WeChat bot launched');
 
 	const tgBot = new Telegraf(config.telegram.botToken);
 	await setUpTg(tgBot, client);
