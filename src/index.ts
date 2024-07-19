@@ -2,6 +2,8 @@ import { Telegraf } from 'telegraf';
 import { bold, fmt, link } from 'telegraf/format';
 import dayjs from 'dayjs';
 import { Tweet } from 'rettiwt-api';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
 import { RettiwtUtils } from './rettiwt-utils';
 import { setUpTg } from './telegram-utils';
@@ -10,11 +12,15 @@ import { groupController } from './controllers/GroupController';
 import { WechatBot } from './wechat-bot';
 import { config } from './config';
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const createTgText = (tweet: Tweet) => {
 	return fmt([
 		bold(tweet.tweetBy.fullName), '发推了\n',
 		'内容: ', tweet.fullText, '\n',
-		'时间: ', dayjs(tweet.createdAt).format('YYYY-MM-DD HH:mm:ss'), '\n',
+		'北京时间: ', dayjs(tweet.createdAt).tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss'), '\n',
+		'世界标准时间: ', dayjs(tweet.createdAt).format('YYYY-MM-DD HH:mm:ss'), '\n',
 		'链接: ', link('查看原文', `https://twitter.com/${tweet.tweetBy.userName}/status/${tweet.id}`)
 	]);
 };
@@ -55,7 +61,8 @@ const sendToWeChat = async (bot: WechatBot, tweet: Tweet) => {
 		const text = [
 			`${tweet.tweetBy.fullName}发推了`,
 			`内容: ${tweet.fullText}`,
-			`时间: ${dayjs(tweet.createdAt).format('YYYY-MM-DD HH:mm:ss')}`,
+			`北京时间: ${dayjs(tweet.createdAt).tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}`,
+			`世界标准时间: ${dayjs(tweet.createdAt).format('YYYY-MM-DD HH:mm:ss')}`,
 			`链接: https://twitter.com/${tweet.tweetBy.userName}/status/${tweet.id}`
 		].join('\n');
 		await Promise.all(
