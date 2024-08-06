@@ -2,7 +2,7 @@
   "name": "twitter-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": ">=16.17.0"
   },
@@ -11,7 +11,7 @@
     "start": "pm2 start src/index.ts --interpreter ts-node --name twitter-bot -o ./logs/out.log -e ./logs/error.log",
     "stop": "pm2 stop twitter-bot",
     "reload": "pm2 reload twitter-bot",
-    "build": "tsc"
+    "build": "rimraf dist && tsc"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
     "@types/qrcode-terminal": "^0.12.2",
     "nodemon": "^3.1.0",
     "pm2": "^5.3.1",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   },
