@@ -50,7 +50,7 @@ const sendToTg = async (bot: Telegraf, tweet: Tweet) => {
 const sendToWeChat = async (bot: WechatBot, tweet: Tweet) => {
 	if (bot.bot.isLoggedIn) {
 		const rooms = await Promise.all(
-			(config.weChat.groupTopics as string[])
+			config.weChat.groupTopics
 				.map((topic: string) => {
 					return bot.bot.Room.find({
 						topic

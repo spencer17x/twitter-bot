@@ -10,7 +10,8 @@
     "dev": "ts-node src/index.ts",
     "start": "pm2 start src/index.ts --interpreter ts-node --name twitter-bot -o ./logs/out.log -e ./logs/error.log",
     "stop": "pm2 stop twitter-bot",
-    "reload": "pm2 reload twitter-bot"
+    "reload": "pm2 reload twitter-bot",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,7 @@
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "dayjs-plugin-utc": "^0.1.2",
+    "dotenv": "^16.4.5",
     "puppeteer": "^22.8.0",
     "qrcode-terminal": "^0.12.0",
     "rettiwt-api": "^3.1.1",
