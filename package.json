@@ -8,34 +8,36 @@
   },
   "scripts": {
     "dev": "ts-node src/index.ts",
-    "start": "pm2 start src/index.ts --interpreter ts-node --name twitter-bot -o ./logs/out.log -e ./logs/error.log",
-    "stop": "pm2 stop twitter-bot",
-    "reload": "pm2 reload twitter-bot",
-    "build": "rimraf dist && tsc"
+    "build": "rimraf dist && rollup -c rollup.config.ts --configPlugin typescript --bundleConfigAsCjs",
+    "start": "pm2 start src/index.ts --interpreter ts-node --name twitter-bot -o ./logs/out.log -e ./logs/error.log"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@rollup/plugin-alias": "^5.1.0",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^20.12.10",
     "@types/qrcode-terminal": "^0.12.2",
-    "nodemon": "^3.1.0",
     "pm2": "^5.3.1",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "tslib": "^2.6.3",
+    "rollup": "^4.20.0"
   },
   "dependencies": {
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "dayjs-plugin-utc": "^0.1.2",
     "dotenv": "^16.4.5",
-    "puppeteer": "^22.8.0",
     "qrcode-terminal": "^0.12.0",
     "rettiwt-api": "^3.1.1",
     "telegraf": "^4.16.3",
     "timezone": "link:dayjs/plugin/timezone",
-    "twitter-api-v2": "^1.16.4",
     "wechaty": "^1.20.2"
   }
 }
