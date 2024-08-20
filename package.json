@@ -24,10 +24,11 @@
     "@types/qrcode-terminal": "^0.12.2",
     "pm2": "^5.3.1",
     "rimraf": "^6.0.1",
+    "rollup": "^4.20.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.3",
+    "tsconfig-paths": "^4.2.0",
     "tslib": "^2.6.3",
-    "rollup": "^4.20.0"
+    "typescript": "^5.5.3"
   },
   "dependencies": {
     "axios": "^1.7.2",

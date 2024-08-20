@@ -1,25 +1,26 @@
-import { IRettiwtConfig, Rettiwt, Tweet, User } from 'rettiwt-api';
+import { Rettiwt, Tweet } from 'rettiwt-api';
 
-export interface LaunchLoginOptions {
-	password: string;
-	email: string;
+export interface LaunchOptions {
+	apiKey: string;
+	userName: string;
 }
 
-export type LaunchOptions = {
-	userName: string;
-	onUpdate: (tweet: Tweet) => void;
+export interface checkUpdateCallback {
+	onUpdate?: (tweet: Tweet) => void;
 	onUpdateError?: (error: unknown) => void;
-} & (LaunchLoginOptions | IRettiwtConfig);
+}
 
-export type checkUpdateCallback = Pick<LaunchOptions, 'onUpdate' | 'onUpdateError'>
-
-export class RettiwtUtils {
-	private loginUserName: string = '';
+export class TwitterService {
+	private userName: string = '';
 	private client: Rettiwt | null = null;
 	private tweets: Tweet[] = [];
 	private launchTime: number = 0;
 
-	private checkUpdate = async (callback: checkUpdateCallback) => {
+	/**
+	 * 检查消息更新
+	 * @param callback
+	 */
+	public checkUpdate = async (callback: checkUpdateCallback = {}) => {
 		try {
 			console.log('Checking for new tweets...');
 			const { onUpdate, onUpdateError } = callback;
@@ -40,7 +41,7 @@ export class RettiwtUtils {
 					};
 					this.tweets.push(lItem);
 					console.log(`New tweet: `, message);
-					onUpdate(lItem);
+					onUpdate?.(lItem);
 				}
 			}
 
@@ -68,29 +69,30 @@ export class RettiwtUtils {
 		return this.client;
 	};
 
+	/**
+	 * 启动服务
+	 * @param options
+	 */
 	public launch = async (options: LaunchOptions) => {
-		if ('password' in options) {
-			const { email, userName, password } = options;
-			this.client = new Rettiwt();
-			await this.client.auth.login(email, userName, password);
-		} else {
-			this.client = new Rettiwt(options);
-		}
+		const { apiKey, userName } = options;
+		this.client = new Rettiwt({
+			apiKey
+		});
+		console.log('Twitter login');
 
-		const {
-			userName,
-			onUpdate, onUpdateError
-		} = options;
-
-		this.loginUserName = userName;
+		this.userName = userName;
 		this.launchTime = Date.now();
 
-		this.checkUpdate({
-			onUpdate,
-			onUpdateError
-		}).catch(console.error);
+		// this.checkUpdate({
+		// 	onUpdate,
+		// 	onUpdateError
+		// }).catch(console.error);
 	};
 
+	/**
+	 * 订阅用户
+	 * @param users
+	 */
 	public sub = async (users: string[]) => {
 		console.log(`Start subscribing to users`);
 
@@ -130,9 +132,14 @@ export class RettiwtUtils {
 		console.log(`Finished unsubscribing to users`);
 	};
 
-	public listSubUsers = async () => {
-		const user = await this.getClient().user.details(this.loginUserName);
+	/**
+	 * 获取关注列表
+	 */
+	public getFollowing = async () => {
+		const user = await this.getClient().user.details(this.userName);
 		const result = await this.getClient().user.following(user?.id || '');
 		return result.list;
 	};
 }
+
+export const twitterService = new TwitterService();
