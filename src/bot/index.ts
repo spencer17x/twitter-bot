@@ -49,7 +49,7 @@ export class Bot {
 		bot.start((ctx) => {
 			ctx.reply('Welcome to twitter notify bot');
 		});
-		bot.command('list-following', async (ctx) => {
+		bot.command('following', async (ctx) => {
 			const users = await twitterService.getFollowing();
 			ctx.reply(
 				users
@@ -65,7 +65,7 @@ export class Bot {
 				}
 			).catch(console.error);
 		});
-		bot.command('list-sub', async (ctx) => {
+		bot.command('list', async (ctx) => {
 			const users = await twitterService.getFollowing();
 			const subUsers = users.filter((user) => subUserNames.includes(user.userName));
 			ctx.reply(
