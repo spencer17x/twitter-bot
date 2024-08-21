@@ -49,7 +49,7 @@ export class Bot {
 		bot.start((ctx) => {
 			ctx.reply('Welcome to twitter notify bot');
 		});
-		bot.command('list', async (ctx) => {
+		bot.command('list-following', async (ctx) => {
 			const users = await twitterService.getFollowing();
 			ctx.reply(
 				users
@@ -58,7 +58,27 @@ export class Bot {
 					})
 					.join('\n'),
 				{
-					parse_mode: 'Markdown'
+					parse_mode: 'Markdown',
+					link_preview_options: {
+						is_disabled: true
+					}
+				}
+			).catch(console.error);
+		});
+		bot.command('list-sub', async (ctx) => {
+			const users = await twitterService.getFollowing();
+			const subUsers = users.filter((user) => subUserNames.includes(user.userName));
+			ctx.reply(
+				subUsers
+					.map((item) => {
+						return `[${item.fullName}](https://x.com/${item.userName})`;
+					})
+					.join('\n'),
+				{
+					parse_mode: 'Markdown',
+					link_preview_options: {
+						is_disabled: true
+					}
 				}
 			).catch(console.error);
 		});
