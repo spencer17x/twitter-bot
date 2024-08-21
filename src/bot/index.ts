@@ -77,7 +77,10 @@ export class Bot {
 								`北京时间: ${dayjs(tweet.createdAt).tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}`,
 								`世界时间: ${dayjs(tweet.createdAt).utc().format('YYYY-MM-DD HH:mm:ss')}`,
 								`链接: [查看原文](https://twitter.com/${tweet.tweetBy.userName}/status/${tweet.id})`
-							].join('\n')
+							].join('\n'),
+							{
+								parse_mode: 'Markdown'
+							}
 						).catch(console.error);
 					});
 				}
