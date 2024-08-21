@@ -1,4 +1,5 @@
 import { Rettiwt, Tweet } from 'rettiwt-api';
+import dayjs from 'dayjs';
 
 export interface LaunchOptions {
 	apiKey: string;
@@ -30,7 +31,7 @@ export class TwitterService {
 			for (const lItem of list) {
 				if (
 					!this.tweets.some(tweet => tweet.id === lItem.id) &&
-					new Date(lItem.createdAt).getTime() - this.launchTime >= 0
+					dayjs(lItem.createdAt).valueOf() - this.launchTime >= 0
 				) {
 					const message = {
 						userName: lItem.tweetBy.userName,
